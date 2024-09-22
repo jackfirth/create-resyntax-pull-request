@@ -30,11 +30,6 @@ runs:
       shell: bash
       env:
         GH_TOKEN: ${{ steps.generate-token.outputs.token }}
-    - name: Checkout code
-      uses: actions/checkout@v3.6.0
-      # See https://github.com/actions/checkout/issues/118.
-      with:
-        fetch-depth: 0
     - name: Create a new branch
       run: git checkout -b autofix-${{ github.run_number }}-${{ github.run_attempt }}
       shell: bash
