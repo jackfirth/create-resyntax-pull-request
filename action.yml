@@ -12,6 +12,10 @@ inputs:
     description: 'The maximum number of files to modify.'
     required: false
     default: '3'
+  max-modified-lines:
+    description: 'The maximum number of lines to modify.'
+    required: false
+    default: '300'
   max-pass-count:
     description: 'The maximum number of passes to perform on the same files.'
     required: false
@@ -43,6 +47,7 @@ runs:
           --directory . \
           --max-fixes ${{ inputs.max-fixes }} \
           --max-modified-files ${{ inputs.max-modified-files }} \
+          --max-modified-lines ${{ inputs.max-modified-lines }} \
           --max-pass-count ${{ inputs.max-pass-count }} \
           --output-as-commit-message \
           >> /tmp/resyntax-output.txt
