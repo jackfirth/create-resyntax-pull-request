@@ -58,8 +58,8 @@ runs:
         github-token: ${{ steps.generate-token.outputs.token }}
         script: |
           const { readFile, writeFile } = require('fs/promises');
-          const untrackedStr = await exec.exec('git diff-index --quiet HEAD -- || echo "untracked"');
-          if (untrackedStr == 'untracked') {
+          const changesStr = await exec.exec('git diff-index --quiet HEAD -- || echo "changesExist"');
+          if (changesStr != 'changesExist') {
             return;
           }
           const commitMessageBody = await readFile('/tmp/resyntax-output.txt', { encoding: 'utf8' });
