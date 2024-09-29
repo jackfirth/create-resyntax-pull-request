@@ -58,13 +58,6 @@ runs:
         github-token: ${{ steps.generate-token.outputs.token }}
         script: |
           const { readFile, writeFile } = require('fs/promises');
-          let outputStr = '';
-          const options = {listeners: {stdout: data => {outputStr += data.toString();}}};
-          await exec.exec('[ -z "$(git status --porcelain=v1 2>/dev/null)" ] && echo "No uncommitted changes."', [], options);
-          if (outputStr === 'No uncommitted changes.') {
-            await exec.exec('echo' [outputStr]);
-            return;
-          }
           const commitMessageBody = await readFile('/tmp/resyntax-output.txt', { encoding: 'utf8' });
           const commitMessageTitle = "Automated Resyntax fixes";
           const commitMessage = commitMessageTitle + "\n\n" + commitMessageBody;
