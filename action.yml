@@ -58,7 +58,14 @@ runs:
         github-token: ${{ steps.generate-token.outputs.token }}
         script: |
           const { readFile, writeFile } = require('fs/promises');
-          const changesStr = await exec.exec('git diff-index --quiet HEAD -- || echo "changesExist"');
+          let changesStr = '';
+          const options = {};
+          options.listeners = {
+            stdout: (data: Buffer) => {
+              changesStr += data.toString();
+            }
+          };
+          const changesStr = await exec.exec('git diff-index --quiet HEAD -- || echo "changesExist"', [], options);
           if (changesStr != 'changesExist') {
             return;
           }
