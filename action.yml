@@ -58,10 +58,11 @@ runs:
         github-token: ${{ steps.generate-token.outputs.token }}
         script: |
           const { readFile, writeFile } = require('fs/promises');
-          let changesStr = '';
-          const options = {listeners: {stdout: data => {changesStr += data.toString();}}};
-          await exec.exec('git diff-index --quiet HEAD -- || echo "changesExist"', [], options);
-          if (changesStr != 'changesExist') {
+          let outputStr = '';
+          const options = {listeners: {stdout: data => {outputStr += data.toString();}}};
+          await exec.exec('[ -z "$(git status --porcelain=v1 2>/dev/null)" ] && echo "No uncommitted changes."', [], options);
+          if (outputStr === 'No uncommitted changes.') {
+            await exec.exec('echo' [outputStr]);
             return;
           }
           const commitMessageBody = await readFile('/tmp/resyntax-output.txt', { encoding: 'utf8' });
