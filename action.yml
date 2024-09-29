@@ -61,7 +61,7 @@ runs:
           let changesStr = '';
           const options = {};
           options.listeners = {
-            stdout: (data: Buffer) => {
+            "stdout": (data: Buffer) => {
               changesStr += data.toString();
             }
           };
