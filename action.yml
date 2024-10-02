@@ -11,7 +11,7 @@ inputs:
   max-modified-files:
     description: 'The maximum number of files to modify.'
     required: false
-    default: '3'
+    default: '10'
   max-modified-lines:
     description: 'The maximum number of lines to modify.'
     required: false
