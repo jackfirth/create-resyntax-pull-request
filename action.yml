@@ -1,5 +1,7 @@
 name: 'Create Resyntax Pull Request'
 description: 'Run Resyntax on the repository and gather its suggestions into a pull request'
+icon: 'git-pull-request'
+color: 'red'
 inputs:
   private-key:
     description: 'A private key for the Resyntax CI GitHub App.'
