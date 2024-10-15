@@ -74,7 +74,7 @@ runs:
             repo: context.repo.repo,
             title: commitMessageTitle,
             head: "autofix-${{ github.run_number }}-${{ github.run_attempt }}",
-            base: "master",
+            base: "${{ github.event.repository.default_branch }}",
             body: commitMessageBody,
             maintainer_can_modify: true,
           });
