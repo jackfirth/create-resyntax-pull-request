@@ -41,6 +41,13 @@ runs:
       shell: bash
       env:
         GH_TOKEN: ${{ steps.generate-token.outputs.token }}
+    - name: Configure Git committer
+      uses: actions/github-script@v7.0.1
+      with:
+        github-token: ${{ steps.generate-token.outputs.token }}
+        script: |
+          await exec.exec('git config user.name "${{ steps.generate-token.outputs.app-slug }}[bot]"');
+          await exec.exec('git config user.email "${{ steps.get-user-id.outputs.user-id }}+${{ steps.generate-token.outputs.app-slug }}[bot]@users.noreply.github.com"');
     - name: Create a new branch
       run: git checkout -b autofix-${{ github.run_number }}-${{ github.run_attempt }}
       shell: bash
@@ -53,6 +60,7 @@ runs:
           --max-modified-lines ${{ inputs.max-modified-lines }} \
           --max-pass-count ${{ inputs.max-pass-count }} \
           --output-as-commit-message \
+          --create-multiple-commits \
           >> /tmp/resyntax-output.txt
       shell: bash
     - name: Create pull request
@@ -63,11 +71,6 @@ runs:
           const { readFile, writeFile } = require('fs/promises');
           const commitMessageBody = await readFile('/tmp/resyntax-output.txt', { encoding: 'utf8' });
           const commitMessageTitle = "Automated Resyntax fixes";
-          const commitMessage = commitMessageTitle + "\n\n" + commitMessageBody;
-          await writeFile('/tmp/resyntax-commit-message.txt', commitMessage);
-          await exec.exec('git config user.name "${{ steps.generate-token.outputs.app-slug }}[bot]"');
-          await exec.exec('git config user.email "${{ steps.get-user-id.outputs.user-id }}+${{ steps.generate-token.outputs.app-slug }}[bot]@users.noreply.github.com"');
-          await exec.exec('git commit --all --file=/tmp/resyntax-commit-message.txt');
           await exec.exec('git push --set-upstream origin autofix-${{ github.run_number }}-${{ github.run_attempt }}');
           await github.rest.pulls.create({
             owner: context.repo.owner,
