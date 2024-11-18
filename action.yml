@@ -27,7 +27,7 @@ runs:
   using: "composite"
   steps:
     - name: Install Resyntax
-      run: raco pkg install --auto resyntax
+      run: raco pkg install --auto --skip-installed resyntax
       shell: bash
     - name: Generate a token
       id: generate-token
