@@ -31,7 +31,7 @@ runs:
       shell: bash
     - name: Generate a token
       id: generate-token
-      uses: actions/create-github-app-token@v1
+      uses: actions/create-github-app-token@v2
       with:
         app-id: 999945
         private-key: ${{ inputs.private-key }}
